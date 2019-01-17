@@ -93,11 +93,12 @@ def main():
 
     while len(np.where(label_new == label)[0]) / N_HIC1 < 0.95:
         label = label_new
-        label_new = Generate_label(hic1, Dist1, edge1, dist_inter, para1, para2)
-        [para1, para2] = Maximum_Likelihood(hic1, Dist1, dist_inter,
-                                            label_new, para1, para2,
-                                            N_HIC1, learning_rate1,
-                                            learning_rate2)
+        label_new = Generate_label.Generate_label(hic1, Dist1, edge1,
+                                                  dist_inter, para1, para2)
+        [para1, para2] = Maximum_Likelihood.Maximum_Likelihood(hic1, Dist1, dist_inter,
+                                                               label_new, para1, para2,
+                                                               N_HIC1, learning_rate1,
+                                                               learning_rate2)
         learning_rate1 = learning_rate1 * 0.1
         learning_rate2 = learning_rate2 * 0.1
 
