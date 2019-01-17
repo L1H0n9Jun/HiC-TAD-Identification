@@ -102,7 +102,7 @@ def main():
         learning_rate1 = learning_rate1 * 0.1
         learning_rate2 = learning_rate2 * 0.1
 
-        if iter_num % 100 == 0:
+        if iter_num % 5 == 0:
             print("Iteration: %d; Unchanged label proportion: %d"
                   % (iter_num,
                      len(np.where(label_new == label)[0]) / N_HIC1)

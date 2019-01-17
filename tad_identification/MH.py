@@ -55,7 +55,7 @@ def MH(hic, par, mu1, mu2, p1, flag):
                 accepted = accepted + 1.0  # monitor acceptance
             else:
                 A.append(old)
-    print("alph1 Acceptance rate = " + str(accepted / 10000.0))
+    # print("alph1 Acceptance rate = " + str(accepted / 10000.0))
     A = np.array(A)
 
     return A
