@@ -108,12 +108,12 @@ def main():
                   )
         iter_num += 1
 
-        # reshape lable
-        inner = np.where(label == 1)[0]
-        label_mat = np.zeros((N_HIC1, N_HIC1))
-        label_mat[x1[inner], x2[inner]] = 1
-        label_mat[x2[inner], x1[inner]] = 1
-        np.savetxt("label.txt", label_mat, fmt="%d")
+    # reshape lable
+    inner = np.where(label == 1)[0]
+    label_mat = np.zeros((N_HIC1, N_HIC1))
+    label_mat[x1[inner], x2[inner]] = 1
+    label_mat[x2[inner], x1[inner]] = 1
+    np.savetxt("label.txt", label_mat, fmt="%d")
 
 
 if __name__ == "__main__":
