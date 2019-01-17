@@ -70,7 +70,7 @@ def main():
             edge1.append([i, k1[0]])
         if len(k2) > 0:
             edge1.append([i, k2[0]])
-        #print(str(i))
+        # print(str(i))
 
     edge1 = np.array(edge1)
     np.savetxt("edge.txt", edge1, fmt="%d")
@@ -102,14 +102,20 @@ def main():
         learning_rate1 = learning_rate1 * 0.1
         learning_rate2 = learning_rate2 * 0.1
 
-        if iter_num % 5 == 0:
+        if iter_num % 2 == 0:
             print("Iteration: %d; Unchanged label proportion: %d"
                   % (iter_num,
                      len(np.where(label_new == label)[0]) / N_HIC1)
                   )
         iter_num += 1
 
-    np.savetxt("label.txt", label_new, fmt="%d")
+        # reshape lable
+        inner = np.where(label == 1)[0]
+        out = np.where(label == 0)[0]
+        label_mat = np.zeros((N_HIC1, N_HIC1))
+        label_mat[x1[inner], x2[inner]] = 1
+        label_mat[x2[inner], x1[inner]] = 1
+        np.savetxt("label.txt", label_mat, fmt="%d")
 
 
 if __name__ == "__main__":
