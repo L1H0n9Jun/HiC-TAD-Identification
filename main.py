@@ -15,7 +15,7 @@ def main():
     mat = np.loadtxt("imr90.40Kb.raw.chr1.mat", dtype=np.float64)
     N = np.size(mat, 0)
 
-    print("Pre-processe data.")
+    print("Pre-process data.")
     x = np.where(mat.any(axis=1) == 0)[0]
     x = np.sort(x)
     l = list()
