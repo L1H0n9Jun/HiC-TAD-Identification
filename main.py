@@ -9,9 +9,13 @@ from tad_identification import Maximum_Likelihood, Generate_label
 
 
 def main():
+    """ main """
+
+    print("Loading hic matrix.")
     mat = np.loadtxt("imr90.40Kb.raw.chr1.mat", dtype=np.float64)
     N = np.size(mat, 0)
 
+    print("Pre-processe data.")
     x = np.where(mat.any(axis=1) == 0)[0]
     x = np.sort(x)
     l = list()
@@ -31,9 +35,11 @@ def main():
     y = np.where(d == max(d))[0]
     s = x[l[y, 0][0]]
     e = x[l[y, 1][0]]
+
     # matrix divide to two parts(centromere)
     mat1 = mat[0:s, 0:s]
     mat2 = mat[(e + 1):N, (e + 1):N]
+
     # reduce the dimension
     N_HIC1 = np.size(mat1, 0)
     w = 5
@@ -56,6 +62,7 @@ def main():
     hic1 = mat1_1[x1, x2]
     Dist1 = D[x1, x2]
     edge1 = list()
+
     for i in range(len(x1)):
         k1 = np.where((x1 == x1[i]) & (x2 == (x2[i] + 1)))[0]
         k2 = np.where((x1 == (x1[i] + 1)) & (x2 == x2[i]))[0]
@@ -63,15 +70,18 @@ def main():
             edge1.append([i, k1[0]])
         if len(k2) > 0:
             edge1.append([i, k2[0]])
-        print(str(i))
+        #print(str(i))
+
     edge1 = np.array(edge1)
-    np.savetxt("edge_1.txt", edge1, fmt="%d")
+    np.savetxt("edge.txt", edge1, fmt="%d")
+
     N_HIC1 = len(hic1)
     k_nots = 6
     temp = 1
     dist_inter = np.linspace(0, dist_limit, k_nots)
     # EM algorithm
 
+    print("Run EM algorithm.")
     # initialize parameter
     learning_rate1 = 0.5
     learning_rate2 = 0.01
@@ -80,6 +90,7 @@ def main():
     label = np.zeros((N_HIC1))
     label_new = np.ones(N_HIC1)
     iter_num = 0
+
     while len(np.where(label_new == label)[0]) / N_HIC1 < 0.95:
         label = label_new
         label_new = Generate_label(hic1, Dist1, edge1, dist_inter, para1, para2)
@@ -89,9 +100,15 @@ def main():
                                             learning_rate2)
         learning_rate1 = learning_rate1 * 0.1
         learning_rate2 = learning_rate2 * 0.1
-        print("iter_num" + str(iter_num))
+
+        if iter_num % 100 == 0:
+            print("Iteration: %d; Unchanged label proportion: %d"
+                  % (iter_num,
+                     len(np.where(label_new == label)[0]) / N_HIC1)
+                  )
         iter_num += 1
-    np.savetxt("lable.txt", label_new, fmt="%d")
+
+    np.savetxt("label.txt", label_new, fmt="%d")
 
 
 if __name__ == "__main__":
