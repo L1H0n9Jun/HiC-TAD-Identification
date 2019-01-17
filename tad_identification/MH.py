@@ -2,11 +2,14 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import division
+
 import random
+import sys
 
 import numpy as np
 from scipy.special import gamma
 
+sys.path.append('tad_identification')
 import pxy
 
 

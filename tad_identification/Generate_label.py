@@ -3,8 +3,12 @@
 
 from __future__ import division
 
+import sys
+
 import networkx as nx
 import numpy as np
+
+sys.path.append('tad_identification')
 
 import generate_mu
 import pxy

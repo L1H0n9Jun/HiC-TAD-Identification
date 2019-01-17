@@ -2,10 +2,13 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import division
+
 import random
+import sys
 
 import numpy as np
 
+sys.path.append('tad_identification')
 import B_Spline
 import MH
 import generate_mu
@@ -52,7 +55,6 @@ def Maximum_Likelihood(hic, D, dis_inter, label, para1, para2, N_HIC, l_r1, l_r2
         p2[1, 0] = para2[1, 0]
     ###########################
 
-
     ##parmeter for -1
     x = np.where(label == -1);
     x = x[0]
@@ -76,7 +78,7 @@ def Maximum_Likelihood(hic, D, dis_inter, label, para1, para2, N_HIC, l_r1, l_r2
         p2[0, 0] = A[ids]
         for i in x1:
             a = (-mu[0, i]) / (p1 * (1 + mu[0, i] * p2[0, 0]) ** (1 / p2[0, 0] + 1) + (1 - p1) * (
-                        1 + mu[0, i] * p2[0, 0]))
+                    1 + mu[0, i] * p2[0, 0]))
             grad_beta[0, 0] += a
             b_s = B_Spline(D[i], dis_inter)
             b_s = b_s.reshape((len(b_s)))

@@ -3,8 +3,11 @@
 
 from __future__ import division
 
+import sys
+
 import numpy as np
 
+sys.path.append('tad_identification')
 import B_Spline
 
 

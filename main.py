@@ -1,9 +1,11 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 from __future__ import division
 
 import numpy as np
 
-from tad_ident import Generate_label
-from tad_ident import Maximum_Likelihood
+from tad_identification import Maximum_Likelihood, Generate_label
 
 
 def main():
