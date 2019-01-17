@@ -17,10 +17,10 @@ import pxy
 def Generate_label(hic, D, edge, dist_inter, para1, para2):
     # calculate p(x|y)
     n = len(hic)
-    mu = generate_mu(hic, D, dist_inter, para2)
+    mu = generate_mu.generate_mu(hic, D, dist_inter, para2)
     # for y=1, t-link between s and pixel
     alph = para2[1, 0]
-    PXY_s = pxy(hic, mu[1, :], alph)
+    PXY_s = pxy.pxy(hic, mu[1, :], alph)
     # for y=-1
     PXY_t = np.zeros(n)
     x1 = np.where(hic > 0)
@@ -29,10 +29,10 @@ def Generate_label(hic, D, edge, dist_inter, para1, para2):
     x2 = x2[0]
     alph = para2[0, 0]
     # pxy_2 = (1-para1)/(1-(1+mu[0, x1]*par)**(-1/par))*pxy_2
-    PXY_t[x1] = np.log(1 - para1) + pxy(hic[x1], mu[0, x1], alph)
+    PXY_t[x1] = np.log(1 - para1) + pxy.pxy(hic[x1], mu[0, x1], alph)
     PXY_t[x2] = np.log(para1 + (1 - para1) * (1 / (1 + mu[0, x2] * alph)) ** (1 / alph))
     # alpha = para2[0, 0]
-    # PXY_t = pxy(hic, mu[0, :], alpha)
+    # PXY_t = pxy.pxy(hic, mu[0, :], alpha)
     # t-link weights
     ws = -PXY_t
     wt = -PXY_s

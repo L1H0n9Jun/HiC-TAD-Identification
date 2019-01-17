@@ -15,7 +15,7 @@ import generate_mu
 
 
 def Maximum_Likelihood(hic, D, dis_inter, label, para1, para2, N_HIC, l_r1, l_r2):
-    mu = generate_mu(hic, D, dis_inter, para2)
+    mu = generate_mu.generate_mu(hic, D, dis_inter, para2)
     N_PARA = np.size(para2, 1)
 
     """ 
@@ -32,14 +32,15 @@ def Maximum_Likelihood(hic, D, dis_inter, label, para1, para2, N_HIC, l_r1, l_r2
     # parameter for 1
     p2 = np.zeros((2, N_PARA))
     grad_beta = np.zeros((2, N_PARA - 1))
-    x = np.where(label == 1);
+    x = np.where(label == 1)
     x = x[0]
     if len(x) > 0:
         random.shuffle(x)
         sample_num = np.random.randint(10, 100)
         x = x[range(sample_num)]
+
         # MH alpha
-        A = MH(hic[x], para2[1, 0], mu[1, x], 0, 0, 1)
+        A = MH.MH(hic[x], para2[1, 0], mu[1, x], 0, 0, 1)
         ids = len(A) - 1
         while A[ids] < 0:
             ids = ids - 1
@@ -48,7 +49,7 @@ def Maximum_Likelihood(hic, D, dis_inter, label, para1, para2, N_HIC, l_r1, l_r2
             # parameter mu1(beta)
             a = (hic[i] - mu[1, i]) / (1 + mu[1, i] * p2[1, 0])
             grad_beta[1, 0] += a
-            b_s = B_Spline(D[i], dis_inter)
+            b_s = B_Spline.B_Spline(D[i], dis_inter)
             b_s = b_s.reshape((len(b_s)))
             grad_beta[1, 1:(N_PARA - 1)] += a * b_s
     else:
@@ -56,22 +57,24 @@ def Maximum_Likelihood(hic, D, dis_inter, label, para1, para2, N_HIC, l_r1, l_r2
     ###########################
 
     ##parmeter for -1
-    x = np.where(label == -1);
+    x = np.where(label == -1)
     x = x[0]
     if len(x) > 0:
         random.shuffle(x)
         sample_num = np.random.randint(10, 100)
         x = x[range(sample_num)]
-        x1 = x[np.where(hic[x] == 0)[0]];
+        x1 = x[np.where(hic[x] == 0)[0]]
         x2 = x[np.where(hic[x] > 0)[0]]
+
         # parameter pi
-        A = MH(hic[x2], para1, mu[0, x1], mu[0, x2], para2[0, 0], 2)
+        A = MH.MH(hic[x2], para1, mu[0, x1], mu[0, x2], para2[0, 0], 2)
         ids = len(A) - 1
         while A[ids] < 0:
             ids = ids - 1
         p1 = A[ids]
+
         # parameter dispersion(alph)
-        A = MH(hic[x2], para2[0, 0], mu[0, x1], mu[0, x2], p1, 3)
+        A = MH.MH(hic[x2], para2[0, 0], mu[0, x1], mu[0, x2], p1, 3)
         ids = len(A) - 1
         while A[ids] < 0:
             ids = ids - 1
@@ -80,14 +83,14 @@ def Maximum_Likelihood(hic, D, dis_inter, label, para1, para2, N_HIC, l_r1, l_r2
             a = (-mu[0, i]) / (p1 * (1 + mu[0, i] * p2[0, 0]) ** (1 / p2[0, 0] + 1) + (1 - p1) * (
                     1 + mu[0, i] * p2[0, 0]))
             grad_beta[0, 0] += a
-            b_s = B_Spline(D[i], dis_inter)
+            b_s = B_Spline.B_Spline(D[i], dis_inter)
             b_s = b_s.reshape((len(b_s)))
             grad_beta[0, 1:(N_PARA - 1)] += a * b_s
         for i in x2:
             # parameter mu1(beta)
             a = (hic[i] - mu[0, i]) / (1 + mu[0, i] * p2[0, 0])
             grad_beta[0, 0] += a
-            b_s = B_Spline(D[i], dis_inter)
+            b_s = B_Spline.B_Spline(D[i], dis_inter)
             b_s = b_s.reshape((len(b_s)))
             grad_beta[0, 1:(N_PARA - 1)] += a * b_s
     else:
