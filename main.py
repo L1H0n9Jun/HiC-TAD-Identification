@@ -77,7 +77,6 @@ def main():
 
     N_HIC1 = len(hic1)
     k_nots = 6
-    temp = 1
     dist_inter = np.linspace(0, dist_limit, k_nots)
     # EM algorithm
 
@@ -87,7 +86,7 @@ def main():
     learning_rate2 = 0.01
     para1 = 0.5
     para2 = np.random.rand(2, 5)
-    label = np.zeros((N_HIC1))
+    label = np.zeros(N_HIC1)
     label_new = np.ones(N_HIC1)
     iter_num = 0
 
@@ -111,7 +110,6 @@ def main():
 
         # reshape lable
         inner = np.where(label == 1)[0]
-        out = np.where(label == 0)[0]
         label_mat = np.zeros((N_HIC1, N_HIC1))
         label_mat[x1[inner], x2[inner]] = 1
         label_mat[x2[inner], x1[inner]] = 1
