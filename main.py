@@ -2,8 +2,8 @@ from __future__ import division
 
 import numpy as np
 
-import Generate_label
-import Maximum_Likelihood
+from tad_ident import Generate_label
+from tad_ident import Maximum_Likelihood
 
 
 def main():
